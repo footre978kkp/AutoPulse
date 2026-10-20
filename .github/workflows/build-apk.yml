@@ -25,6 +25,7 @@ jobs:
           cat patch23/p1.txt patch23/p2.txt patch23/p3.txt | base64 --decode > patch23.tar.xz
           xz -t patch23.tar.xz
           tar -xJf patch23.tar.xz
+          python3 patch23/fix_kotlin.py
           echo 'New simple app version:'
           grep 'versionName' app/build.gradle.kts
           test -f app/build.gradle.kts
