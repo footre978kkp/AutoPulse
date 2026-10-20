@@ -26,6 +26,11 @@ jobs:
           xz -t patch23.tar.xz
           tar -xJf patch23.tar.xz
           python3 patch23/fix_kotlin.py
+          cat patch24/part1.txt patch24/part2.txt patch24/part3.txt | base64 --decode > patch24.tar.xz
+          xz -t patch24.tar.xz
+          tar -xJf patch24.tar.xz
+          python3 autopulse_v24_patch.py
+          cp TapPickerOverlay.kt app/src/main/java/com/autopulse/scheduler/TapPickerOverlay.kt
           echo 'New simple app version:'
           grep 'versionName' app/build.gradle.kts
           test -f app/build.gradle.kts
@@ -87,7 +92,7 @@ jobs:
       - name: Upload installable APK
         uses: actions/upload-artifact@v4
         with:
-          name: AutoPulse-v2.3-Simple-HONOR-APK
+          name: AutoPulse-v2.4-TapPicker-HONOR-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 30
