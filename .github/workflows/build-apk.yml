@@ -22,6 +22,11 @@ jobs:
           cat source/part1.b64 source/part2.b64 source/part3.b64 | base64 --decode > autopulse.tar.xz
           xz -t autopulse.tar.xz
           tar -xJf autopulse.tar.xz
+          cat patch23/p1.txt patch23/p2.txt patch23/p3.txt | base64 --decode > patch23.tar.xz
+          xz -t patch23.tar.xz
+          tar -xJf patch23.tar.xz
+          echo 'New simple app version:'
+          grep 'versionName' app/build.gradle.kts
           test -f app/build.gradle.kts
           test -f app/src/main/AndroidManifest.xml
 
@@ -81,7 +86,7 @@ jobs:
       - name: Upload installable APK
         uses: actions/upload-artifact@v4
         with:
-          name: AutoPulse-HONOR-X9d-APK
+          name: AutoPulse-v2.3-Simple-HONOR-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 30
