@@ -5,7 +5,7 @@ s = p.read_text(encoding="utf-8")
 fixes = [
     ("minHeight = dp(", "minimumHeight = dp("),
     ("setText(Scheduler.buttonText(this))", "setText(Scheduler.buttonText(this@MainActivity))"),
-    ("adapter = appAdapter", "setAdapter(appAdapter)"),
+    ("adapter = adapter", "setAdapter(adapter)"),
     ("s.orEmpty().toString()", "s?.toString().orEmpty()"),
 ]
 for old, new in fixes:
