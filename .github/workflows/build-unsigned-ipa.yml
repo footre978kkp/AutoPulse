@@ -1,13 +1,50 @@
-name: CN7 Bridge Lab build
+name: Build unsigned CN7 Bridge Lab IPA
 on:
   workflow_dispatch:
+  push:
+    branches: [cn7-bridge-lab]
+    paths:
+      - "CN7BridgeLab/**"
+      - "CN7BridgeLab.xcodeproj/**"
+      - "Tools/**"
+      - ".github/workflows/build-unsigned-ipa.yml"
+permissions:
+  contents: read
 jobs:
-  build:
+  build-ios:
+    name: iOS unsigned test build
     runs-on: macos-latest
+    timeout-minutes: 35
     steps:
-      - uses: actions/checkout@v4
-      - name: Check project
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Check Xcode and iOS SDK
         run: |
-          test -f CN7BridgeLab.xcodeproj/project.pbxproj
-      - name: Build
-        run: xcodebuild -project CN7BridgeLab.xcodeproj -scheme CN7BridgeLab -configuration Release -sdk iphoneos CODE_SIGNING_ALLOWED=NO build
+          xcodebuild -version
+          xcodebuild -showsdks
+          xcodebuild -list -project CN7BridgeLab.xcodeproj
+      - name: Run local CarLife framing tests
+        run: |
+          swiftc CN7BridgeLab/CarLifeFraming.swift Tools/CodecSelfTest.swift -o /tmp/cn7-codec-test
+          /tmp/cn7-codec-test
+      - name: Build iPhone app without signing
+        run: |
+          set -euo pipefail
+          xcodebuild -project CN7BridgeLab.xcodeproj -scheme CN7BridgeLab -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath /tmp/CN7DerivedData CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build
+      - name: Package unsigned IPA
+        run: |
+          set -euo pipefail
+          APP=/tmp/CN7DerivedData/Build/Products/Release-iphoneos/CN7BridgeLab.app
+          test -d "$APP"
+          mkdir -p output/Payload
+          ditto "$APP" output/Payload/CN7BridgeLab.app
+          cd output
+          /usr/bin/zip -qry CN7BridgeLab-UNSIGNED.ipa Payload
+          /usr/bin/unzip -tq CN7BridgeLab-UNSIGNED.ipa
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CN7BridgeLab-UNSIGNED-IPA
+          path: output/CN7BridgeLab-UNSIGNED.ipa
+          retention-days: 7
+          if-no-files-found: error

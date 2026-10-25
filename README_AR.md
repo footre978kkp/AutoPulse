@@ -1,3 +1,18 @@
-# CN7 Bridge Lab
-Experimental iOS CarLife connection diagnostic. Not functional CarPlay.
-Source archive available in conversation. GitHub Actions builds an unsigned IPA only after the complete Xcode project is uploaded.
+# CN7 Bridge Lab — اختبار iOS بالعربي
+
+تطبيق فحص تجريبي لشاشة النترا CN7c، مع واجهة عربية وثلاث مجموعات بيانات تشخيصية:
+- التحكم والاتصال
+- فيديو تجريبي (بدون بث)
+- تقارير تشخيص
+
+هذا **ليس تطبيق CarPlay** ولا يعرض الفيديو على الشاشة. التطبيق لا يرسل بيانات عبر USB، ولا يغير نظام السيارة، ولا يضمن ظهور ملحق CarLife داخل ExternalAccessory. يختبر فقط الامكانيات المتاحة لتطبيق iOS عادي.
+
+## بناء IPA بدون Mac شخصي
+
+GitHub Actions على فرع `cn7-bridge-lab` يبني المشروع عبر Xcode ويولد IPA غير موقع. من تبويب Actions افتح آخر تشغيل ثم Artifacts وحمل `CN7BridgeLab-UNSIGNED-IPA`. بعدها يحتاج توقيع صالح قبل التثبيت. نجاح بناء IPA لا يعني عمل CarPlay.
+
+## تجربة امنة
+
+والسيارة واقفة، وصل الايفون بكابل بيانات وافتح CarLife، واضغط فحص الاتصال ثم جرب المجموعات الثلاث وانسخ التقرير.
+
+Project reference: https://github.com/YegorkaPomidorka/headswap
