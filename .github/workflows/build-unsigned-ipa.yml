@@ -1,0 +1,13 @@
+name: CN7 Bridge Lab build
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check project
+        run: |
+          test -f CN7BridgeLab.xcodeproj/project.pbxproj
+      - name: Build
+        run: xcodebuild -project CN7BridgeLab.xcodeproj -scheme CN7BridgeLab -configuration Release -sdk iphoneos CODE_SIGNING_ALLOWED=NO build
