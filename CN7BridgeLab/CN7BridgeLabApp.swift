@@ -34,6 +34,8 @@ final class AccessoryDiagnostics: ObservableObject {
     @Published private(set) var accessories: [AccessoryRow] = []
     @Published private(set) var lastScan = "بعد ما انعمل الفحص"
     @Published private(set) var codecResult = "بعد ما انعمل الاختبار"
+    @Published private(set) var reportText = "جاري اعداد تقرير الجهاز..."
+    @Published var copied = false
 
     init() { EAAccessoryManager.shared().registerForLocalNotifications() }
 
@@ -44,9 +46,13 @@ final class AccessoryDiagnostics: ObservableObject {
                          protocols: item.protocolStrings)
         }
         lastScan = Date().formatted(date: .abbreviated, time: .standard)
+        generateReport()
     }
 
-    func runLocalTest() { codecResult = CarLifeCodecDiagnostics.run() }
+    func runLocalTest() {
+        codecResult = CarLifeCodecDiagnostics.run()
+        generateReport()
+    }
 
     func testPackage(_ package: DiagnosticPackage) {
         switch package {
@@ -59,7 +65,7 @@ final class AccessoryDiagnostics: ObservableObject {
         }
     }
 
-    func exportReport() {
+    func generateReport() {
         var lines = [
             "CN7 Bridge Lab - Diagnostic report",
             "Phone: \(UIDevice.current.model); iOS \(UIDevice.current.systemVersion)",
@@ -76,7 +82,13 @@ final class AccessoryDiagnostics: ObservableObject {
         }
         lines.append("No accessory listed does not prove CarLife is absent.")
         lines.append("This app cannot open Apple CarPlay or an unauthorized USB transport.")
-        UIPasteboard.general.string = lines.joined(separator: "\n")
+        reportText = lines.joined(separator: "\n")
+    }
+
+    func exportReport() {
+        generateReport()
+        UIPasteboard.general.string = reportText
+        copied = true
     }
 }
 
@@ -144,8 +156,21 @@ struct ContentView: View {
                     GroupBox("تقرير التشخيص") {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("والسيارة واقفة، وصل الايفون وافتح CarLife، بعدها افحص الاتصال.")
-                            Button("نسخ تقرير التشخيص") { diagnostic.exportReport() }
+                            Text("التقرير المباشر - تقدر تحدد النص وتنسخه:")
+                                .font(.headline)
+                            Text(diagnostic.reportText)
+                                .font(.system(size: 12, design: .monospaced))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(10)
+                                .background(Color.gray.opacity(0.10), in: RoundedRectangle(cornerRadius: 10))
+                                .textSelection(.enabled)
+                                .environment(\.layoutDirection, .leftToRight)
+                            Button("نسخ التقرير") { diagnostic.exportReport() }
                                 .buttonStyle(.borderedProminent)
+                            ShareLink(item: diagnostic.reportText) {
+                                Label("مشاركة التقرير", systemImage: "square.and.arrow.up")
+                            }
+                            .buttonStyle(.bordered)
                             Text("النسخة الحالية مختبر تشخيص، مو CarPlay حقيقي.")
                                 .font(.caption).foregroundStyle(.secondary)
                         }.frame(maxWidth: .infinity, alignment: .leading)
@@ -154,7 +179,12 @@ struct ContentView: View {
             }
             .navigationTitle("مختبر ربط النترا")
             .environment(\.layoutDirection, .rightToLeft)
-            .onAppear { diagnostic.refresh() }
+            .onAppear { diagnostic.refresh(); diagnostic.runLocalTest() }
+            .alert("تم نسخ التقرير", isPresented: $diagnostic.copied) {
+                Button("تمام", role: .cancel) { }
+            } message: {
+                Text("افتح المحادثة واضغط لصق، او استخدم زر مشاركة التقرير.")
+            }
             .onReceive(NotificationCenter.default.publisher(for: .EAAccessoryDidConnect)) { _ in
                 diagnostic.refresh()
             }
