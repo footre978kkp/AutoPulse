@@ -1,0 +1,27 @@
+// !$*UTF8*$!
+{
+ archiveVersion = 1;
+ classes = {};
+ objectVersion = 56;
+ objects = {
+  AA0000000000000000000001 = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = YES; LastUpgradeCheck = 1600; TargetAttributes = {AA0000000000000000000002 = {CreatedOnToolsVersion = 16.0; }; }; }; buildConfigurationList = AA0000000000000000000004; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = AA0000000000000000000003; productRefGroup = AA0000000000000000000006; projectDirPath = ""; projectRoot = ""; targets = (AA0000000000000000000002,); };
+  AA0000000000000000000002 = {isa = PBXNativeTarget; buildConfigurationList = AA0000000000000000000005; buildPhases = (AA0000000000000000000007, AA0000000000000000000008,); buildRules = (); dependencies = (); name = CN7BridgeLab; productName = CN7BridgeLab; productReference = AA0000000000000000000009; productType = "com.apple.product-type.application"; };
+  AA0000000000000000000003 = {isa = PBXGroup; children = (AA000000000000000000000A, AA0000000000000000000006,); sourceTree = "<group>"; };
+  AA0000000000000000000006 = {isa = PBXGroup; children = (AA0000000000000000000009,); name = Products; sourceTree = "<group>"; };
+  AA000000000000000000000A = {isa = PBXGroup; children = (AA000000000000000000000B, AA000000000000000000000C,); path = CN7BridgeLab; sourceTree = "<group>"; };
+  AA000000000000000000000B = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CN7BridgeLabApp.swift; sourceTree = "<group>"; };
+  AA000000000000000000000C = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarLifeFraming.swift; sourceTree = "<group>"; };
+  AA0000000000000000000009 = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CN7BridgeLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
+  AA000000000000000000000D = {isa = PBXBuildFile; fileRef = AA000000000000000000000B; };
+  AA000000000000000000000E = {isa = PBXBuildFile; fileRef = AA000000000000000000000C; };
+  AA0000000000000000000007 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (AA000000000000000000000D, AA000000000000000000000E,); runOnlyForDeploymentPostprocessing = 0; };
+  AA0000000000000000000008 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+  AA0000000000000000000004 = {isa = XCConfigurationList; buildConfigurations = (AA000000000000000000000F, AA0000000000000000000010,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+  AA0000000000000000000005 = {isa = XCConfigurationList; buildConfigurations = (AA0000000000000000000011, AA0000000000000000000012,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+  AA000000000000000000000F = {isa = XCBuildConfiguration; buildSettings = {CLANG_ENABLE_MODULES = YES; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; IPHONEOS_DEPLOYMENT_TARGET = 17.0; }; name = Debug; };
+  AA0000000000000000000010 = {isa = XCBuildConfiguration; buildSettings = {CLANG_ENABLE_MODULES = YES; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; IPHONEOS_DEPLOYMENT_TARGET = 17.0; }; name = Release; };
+  AA0000000000000000000011 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES; CODE_SIGN_STYLE = Automatic; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "CN7 Bridge Lab"; IPHONEOS_DEPLOYMENT_TARGET = 17.0; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks"); PRODUCT_BUNDLE_IDENTIFIER = iq.cn7.bridge.lab; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1; }; name = Debug; };
+  AA0000000000000000000012 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES; CODE_SIGN_STYLE = Automatic; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "CN7 Bridge Lab"; IPHONEOS_DEPLOYMENT_TARGET = 17.0; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks"); PRODUCT_BUNDLE_IDENTIFIER = iq.cn7.bridge.lab; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1; }; name = Release; };
+ };
+ rootObject = AA0000000000000000000001;
+}

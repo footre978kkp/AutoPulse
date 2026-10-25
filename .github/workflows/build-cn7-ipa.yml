@@ -1,0 +1,43 @@
+name: CN7 Bridge Lab - Build unsigned IPA
+on:
+  push:
+    branches: [cn7-bridge-lab-ipa-test]
+    paths:
+      - 'CN7BridgeLab/**'
+      - 'CN7BridgeLab.xcodeproj/**'
+      - 'Tools/**'
+      - '.github/workflows/build-cn7-ipa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Xcode details
+        run: |
+          xcodebuild -version
+          xcodebuild -list -project CN7BridgeLab.xcodeproj
+      - name: Codec test
+        run: |
+          swiftc CN7BridgeLab/CarLifeFraming.swift Tools/CodecSelfTest.swift -o "$RUNNER_TEMP/codec"
+          "$RUNNER_TEMP/codec"
+      - name: Build iOS app
+        run: |
+          xcodebuild -project CN7BridgeLab.xcodeproj -scheme CN7BridgeLab -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath "$RUNNER_TEMP/Derived" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build
+      - name: Package IPA
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/IPA/Payload"
+          ditto "$RUNNER_TEMP/Derived/Build/Products/Release-iphoneos/CN7BridgeLab.app" "$RUNNER_TEMP/IPA/Payload/CN7BridgeLab.app"
+          cd "$RUNNER_TEMP/IPA"
+          zip -qry CN7BridgeLab-UNSIGNED.ipa Payload
+          unzip -tq CN7BridgeLab-UNSIGNED.ipa
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CN7BridgeLab-UNSIGNED-IPA
+          path: ${{ runner.temp }}/IPA/CN7BridgeLab-UNSIGNED.ipa
+          retention-days: 7
+          if-no-files-found: error
