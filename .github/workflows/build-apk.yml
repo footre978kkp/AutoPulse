@@ -41,6 +41,12 @@ jobs:
           cat patch30/part{1..7}.b64 | base64 --decode > patch30.tar.xz
           echo '616e3db1b0eeb5765fa1af006fa4ce168ca4edf070a47738a5cf73a013a0498e  patch30.tar.xz' | sha256sum -c -
           tar -xJf patch30.tar.xz
+          cat patch31/p1.b64 patch31/p2.b64 patch31/p3.b64 | base64 --decode > patch31.xz
+          echo '5029aba38f16ace519f40c48e0fdf74a5a631b543ffcdebfebf310666bb15aab  patch31.xz' | sha256sum -c -
+          xz -dc patch31.xz > patch31.diff
+          patch -p1 --batch --forward < patch31.diff
+          test -f app/src/main/java/com/autopulse/scheduler/VerificationLogic.kt
+
           test -f app/src/main/java/com/autopulse/scheduler/ClickAccessibilityService.kt
           echo 'New simple app version:'
           grep 'versionName' app/build.gradle.kts
@@ -103,7 +109,7 @@ jobs:
       - name: Upload installable APK
         uses: actions/upload-artifact@v4
         with:
-          name: AutoPulse-v3.0-Strong-HONOR-APK
+          name: AutoPulse-v3.1-SmartVerifier-HONOR-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 30
