@@ -35,6 +35,10 @@ jobs:
           xz -t patch25.tar.xz
           tar -xJf patch25.tar.xz
           python3 patch25/apply.py
+          cat patch26/part1.txt patch26/part2.txt patch26/part3.txt patch26/part4.txt | base64 --decode > patch26.tar.xz
+          xz -t patch26.tar.xz
+          tar -xJf patch26.tar.xz
+          test -f app/src/main/java/com/autopulse/scheduler/ClickAccessibilityService.kt
           echo 'New simple app version:'
           grep 'versionName' app/build.gradle.kts
           test -f app/build.gradle.kts
@@ -96,7 +100,7 @@ jobs:
       - name: Upload installable APK
         uses: actions/upload-artifact@v4
         with:
-          name: AutoPulse-v2.5-SmartUnlock-HONOR-APK
+          name: AutoPulse-v2.6-DoubleTap-Retry-HONOR-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 30
